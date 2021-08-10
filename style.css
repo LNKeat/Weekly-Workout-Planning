@@ -1,4 +1,5 @@
 * {
+  font-size: 13px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 body {
@@ -23,7 +24,7 @@ h2 {
   font-size: 15px;
 }
 h3 {
-  font-size: 12px;
+  font-size: 14px;
   text-align: left;
 }
 
@@ -55,7 +56,6 @@ h3 {
 #task-form{
   display: inline-block;
   text-align: left;
-  /* height: 200px; */
   width: 50%;
   border-radius: 25px;
   color: rgb(32, 5, 32);
@@ -65,13 +65,12 @@ h3 {
   background: rgb(98, 98, 184);
 }
 .btns{
-  width: 10px;
   display: inline-block;
+  text-align: center;
+  padding: 2px;
 }
 
-#dropdown{
-  clear:both;
-}
+
 .drop-down {
   width: 200px;
 }
@@ -83,6 +82,24 @@ h3 {
   padding: 3px;
   margin: 10px;
 }
+#confirm-card{
+  border: solid 1px rgb(32, 5, 32);
+  background-color: rgb(119, 100, 119);
+  box-shadow: 50px, 100px, rgb(30, 30, 58);
+  border-radius: 25px;
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#confirm-table{
+  text-align: left;
+  width: 100%;
+  padding:5px;
+}
+.right{
+  text-align: center;
+  background-color: white;
+}
 
 #column-a{
   float: right;
@@ -92,11 +109,13 @@ h3 {
   float: left; 
   width: 60%;
 }
+#form-end{
+  clear: both;
+}
 .hide{
   display:none
 }
 .text-input{
-  color: blue;
   width: 100px;
 }
 

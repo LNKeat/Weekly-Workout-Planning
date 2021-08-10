@@ -1,6 +1,5 @@
-//global constants
-const dayBar = document.querySelector('#day-bar')
-const taskForm = document.querySelector('#add-task')
+
+
 
 
 //event listeners
@@ -9,22 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('#btn-ex').addEventListener('click', getExercises)
   document.querySelector('#btn-bp').addEventListener('click', getExercises)
   document.querySelector('#btn-mg').addEventListener('click', getExercises)
+  document.querySelector('input.drop-down').addEventListener('change', getExercise)
+  document.querySelector('#add-task').addEventListener('submit', handleForm)
   getExercises('')
 })
 
-//render funcitons
-function makeTodayCard(){
-  let date = new Date()
-  let today = new Intl.DateTimeFormat('en-US', { weekday: 'long'}).format(date)
-  let section = document.querySelector('#day-card')
-  let dayCard = document.createElement('div')
-  let header = document.createElement('h2')
-  dayCard.class = "day";
-  header.textContent = `Today is ${today}!`
-  section.appendChild(dayCard)
-  dayCard.append(header)
-}
+//global constants
+// const dayBar = document.querySelector('#day-bar')
+// const taskForm = document.querySelector('#add-task')
+// const dlContainer = document.querySelector('#datalist-container')
+// const ddContainer = document.querySelector('#dropdown-container')
+// const dataInput = document.querySelector('input.drop-down')
+// const dataList = document.querySelector('#names')
+// const dropDown = document.querySelector('#narrowedDD')
+
+
 //FETCH get exercise names ---> make datalist or dropdown
+
 function getExercises(e){
   return fetch(`https://exercisedb.p.rapidapi.com/exercises`, {
     "method": "GET",
@@ -59,6 +59,19 @@ function getExercise(e){
 })
 .catch(error => alert("Exercise not found, please choose another"))
 }
+//render functions
+function makeTodayCard(){
+  let date = new Date()
+  let today = new Intl.DateTimeFormat('en-US', { weekday: 'long'}).format(date)
+  let section = document.querySelector('#day-card')
+  let dayCard = document.createElement('div')
+  let header = document.createElement('h2')
+  dayCard.class = "day";
+  header.textContent = `Today is ${today}!`
+  section.appendChild(dayCard)
+  dayCard.append(header)
+}
+
 
 function buildExerciseDL(exercises, key){
   const dropdown = document.querySelector('#narrowedDD')
@@ -67,7 +80,6 @@ function buildExerciseDL(exercises, key){
   const dataList = document.querySelector('#names')
   let value;
   event ? value = event.target.value : value = 'name'
-  dataInput.addEventListener('change', getExercise)
   dlContainer.innerHTML = ""
   dataList.innerHTML = ""
   dlContainer.className = "drop-down"
@@ -121,23 +133,97 @@ function buildCategoryDD(exercises, key){
   
 }
 
-function handleExSelect(exercise){
-  console.log(exercise)
-  //createform to add exercise info manually
-  //autopopulate form with selected exercise
-  //add "accept exercise & set goals"
-  //pass to handle entire form
-}
-
-
- 
-
 function addOption(list, innerText, value){
   let option = document.createElement('option')
   option.innerText = innerText
   option.value = value
   list.appendChild(option)
 }
+
+function handleExSelect(exercise){
+  const {name, bodyPart, equipment, target} = exercise
+  document.querySelector('#confirm-card').hidden = false
+  const confirmForm = document.querySelector('#confirm-select')
+  //autopopulate form with selected exercise
+  document.querySelector('#nameInput').innerText = name
+  document.querySelector('#bpInput').innerText = bodyPart
+  document.querySelector('#targetInput').innerText = target
+  document.querySelector('#equipInput').innerText = equipment
+}
+
+function handleForm(e){
+  e.preventDefault()
+  // console.log(e)
+  const exerciseObj = {
+    userName: document.querySelector('#userName').value,
+    exerciseInput: document.querySelector('#nameInput').innerText,
+    bodyPart: document.querySelector('#bpInput').innerText, 
+    targetMuscle: document.querySelector('#targetInput').innerText, 
+    equipment: document.querySelector('#equipInput').innerText,
+    goals:{
+      dis: document.querySelector('#goal-dis').value,
+      dur: document.querySelector('#goal-dur').value, 
+      reps: document.querySelector('#goal-reps').value,
+      weight: document.querySelector('#goal-weight').value, 
+      other: document.querySelector('#goal-oth').value, 
+      },
+    days: {
+      sun: false,
+      mon: false,
+      tue: false,
+      wed: false,
+      thu: false,
+      fri: false,
+      sat: false
+    }
+  }
+  const checkboxes = document.querySelectorAll('input[name="day"]:checked')
+  const days = []
+  checkboxes.forEach((checkbox) => {
+    const day = checkbox.value
+    exerciseObj.days[day] = true
+  })
+  addExercise(exerciseObj)
+  resetForm()
+  getExercises()
+}
+
+function addExercise(exerciseObj){
+  //set daily exNum to increment with exercises added
+  //have exercise Obj persist
+  //add elistener to daycard buttons to view details
+  //update today card to pull details from related day with checkboxes
+  //add task list removal & celebration to day card
+  let exNum = 2;
+  for(const day in exerciseObj.days){
+    if(exerciseObj.days[day] === true){
+      const dayCard = document.querySelector(`#d-${day}`)
+      const p = document.createElement('p')
+      const btn = document.createElement('button')
+      btn.className = "btns"
+      btn.innerText = "View"
+      exNum === 1 ? p.innerText = "1 exercise" : p.innerText = `${exNum} exercises`
+      dayCard.append(p, btn)
+    } 
+  }   
+}
+
+function resetForm(){
+  const inputs = document.querySelectorAll('input')
+  for(let i = 1; i < 5; i++){
+    let input = inputs[i]
+    input.value = ""
+  }
+  for(let i = 5; i < 12; i++){
+    let checkbox = inputs[i]
+    checkbox.checked = false;
+  }
+  let userName = inputs[inputs.length - 2]
+  userName.value = ""
+  document.querySelector('#goal-oth').value = ""
+
+}
+
 
 
 
