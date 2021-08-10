@@ -16,111 +16,118 @@
     <img src="" alt="">
   </header>
   <main>
+<!-- ****Day Bar**** -->
     <section id="day-bar">
-        <div class="day">
+        <div class="day" id="d-sun">
           <h2>Sunday</h2>
         </div>
-        <div class="day">
+        <div class="day" id="d-mon">
           <h2>Monday</h2>
         </div>
-        <div class="day">
+        <div class="day" id="d-tue">
           <h2>Tuesday</h2>
         </div>
-        <div class="day">
+        <div class="day" id="d-wed">
           <h2>Wednesday</h2>
         </div>
-        <div class="day">
+        <div class="day" id="d-thu">
           <h2>Thursday</h2>
         </div>
-        <div class="day">
+        <div class="day" id="d-fri">
           <h2>Friday</h2>
         </div>
-        <div class="day">
+        <div class="day" id="d-sat">
           <h2>Saturday</h2>
         </div>
     
     </section>
-    <section>
-      <div id="task-form">
-        <form id="add-task">
-          <div id="dropdown">
-          <h2>Add a workout to your schedule</h2>
-          <h3>Choose the workout category: </h3>
-          <select name="category" id="category">
-            <option value="cardio" selected>Cardio Activities</option>
-            <option value="strength">Stregth Training</option>
-            <option value="sports">Sports & Fitness Genres</option>
-          </select>
+<!--***Add Workout Form***-->
+    <section id="task-form">
+      <form id="add-task"></form>
+        <div id="dropdown">
+        <h2>Add a workout to your schedule</h2>
+        <div id="search-by">
+          <h3>Search By: </h3>
+          <button id="btn-ex" value="name">Exercise Names</button>
+          <button id="btn-bp" value="bodyPart">Body Parts</button>
+          <button id="btn-mg" value="target">Target Muscle</button>
         </div>
-        <div id="column-b">
-          <h3>Select your workout:</h3>
-          <select name="cardio" id="workouts">
-            <!-- add inputs based on the category highlighted in #category list -->
-          </select>
-          <h3>Set your goals for this:</h3>
-          <table id="goals">   
-            <tr id="row-dis">
-              <td>
-                <label for="goal-dis">Distance: </label>
-              </td>
-              <td>
-                <input type="text" name="distance" id="goal-dis" placeholder="Distance" class="text-input"><br>
-              </td>
-            </tr>
-            <tr id="row-dur">
-              <td>
-                <label for="goal-dur">Duration: </label>
-              </td>
-              <td>
-                <input type="text" name="duration" id="goal-dur" placeholder="Duration" class="text-input"><br>
-              </td>
-            </tr>
-            <tr id="row-rep">
-              <td>
-                <label for="goal-reps">Number <br>of Reps: </label>
-              </td>
-              <td>
-                <input type="text" name="distance" id="goal-reps" placeholder="Reps" class="text-input"><br>
-              </td>
-            </tr>
-            <tr id="row-wei">
-              <td>
-                <label for="goal-weight">Weight: </label>
-              </td>
-              <td>
-                <input type="text" name="duration" id="goal-weight" placeholder="Weight" class="text-input"><br>
-              </td>
-            </tr>
-            <tr id="row-oth">
-              <td>
-                <label for="goal-oth">Other<br> Goals: </label>
-              </td>
-              <td>
-                <textarea name="other" id="goal-oth" placeholder="Other" class="text-input"></textarea>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <input type="submit" value="Add Workout" class="button">
-              </td>
-            </tr>
-          </table>
-
-          
+        <h3>Select a workout to add: </h3>
+        <div id="dropdown-container" class="hide">
+          <select name="category" id="narrowedDD" class="drop-down"></select>
         </div>
-        <div id="column-a">
-          <h3>Select the Days to Add Workout</h3>
-          <input type="checkbox" name="sun" id="form-day" value="sun">Sunday <br>
-          <input type="checkbox" name="mon" id="form-day" value="mon">Monday <br>
-          <input type="checkbox" name="tues" id="form-day" value="tues">Tuesday <br>
-          <input type="checkbox" name="wed" id="form-day" value="wed">Wednesday <br>
-          <input type="checkbox" name="thur" id="form-day" value="thur">Thursday <br>
-          <input type="checkbox" name="fri" id="form-day" value="fri">Friday <br>
-          <input type="checkbox" name="sat" id="form-day" value="sat">Saturday <br>
-        </div>
-        </form>
+        <div id="datalist-container">
+          <input list="names" class='drop-down' placeholder="Search by exercise">
+          <datalist id="names"></datalist>
       </div>
-      <div id="day-card">
+      <div id="column-b">
+        <h3>Set your goals for this:</h3>
+        <table id="goals">   
+          <tr id="row-dis">
+            <td>
+              <label for="goal-dis">Distance: </label>
+            </td>
+            <td>
+              <input type="text" name="distance" id="goal-dis" placeholder="Distance" class="text-input"><br>
+            </td>
+          </tr>
+          <tr id="row-dur">
+            <td>
+              <label for="goal-dur">Duration: </label>
+            </td>
+            <td>
+              <input type="text" name="duration" id="goal-dur" placeholder="Duration" class="text-input"><br>
+            </td>
+          </tr>
+          <tr id="row-rep">
+            <td>
+              <label for="goal-reps">Number <br>of Reps: </label>
+            </td>
+            <td>
+              <input type="text" name="distance" id="goal-reps" placeholder="Reps" class="text-input"><br>
+            </td>
+          </tr>
+          <tr id="row-wei">
+            <td>
+              <label for="goal-weight">Weight: </label>
+            </td>
+            <td>
+              <input type="text" name="duration" id="goal-weight" placeholder="Weight" class="text-input"><br>
+            </td>
+          </tr>
+          <tr id="row-oth">
+            <td>
+              <label for="goal-oth">Other<br> Goals: </label>
+            </td>
+            <td>
+              <textarea name="other" id="goal-oth" placeholder="Other" class="text-input"></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <input type="submit" value="Add Workout" class="button">
+            </td>
+          </tr>
+        </table>
+
+        
+      </div>
+      <div id="column-a">
+        <h3>Select the Days to Add Workout</h3>
+        <input type="checkbox" name="sun" id="form-day" value="sun">Sunday <br>
+        <input type="checkbox" name="mon" id="form-day" value="mon">Monday <br>
+        <input type="checkbox" name="tues" id="form-day" value="tues">Tuesday <br>
+        <input type="checkbox" name="wed" id="form-day" value="wed">Wednesday <br>
+        <input type="checkbox" name="thur" id="form-day" value="thur">Thursday <br>
+        <input type="checkbox" name="fri" id="form-day" value="fri">Friday <br>
+        <input type="checkbox" name="sat" id="form-day" value="sat">Saturday <br>
+      </div>
+      </form>
+    </section>
+
+<!--***Daily Info Card***-->
+    <section  id="day-card">
+      <div>
 
       </div>
     </section>

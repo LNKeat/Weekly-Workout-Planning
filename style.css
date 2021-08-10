@@ -64,9 +64,18 @@ h3 {
   padding: 20px;
   background: rgb(98, 98, 184);
 }
+.btns{
+  width: 10px;
+  display: inline-block;
+}
+
 #dropdown{
   clear:both;
 }
+.drop-down {
+  width: 200px;
+}
+
 .text{
   width:50px;
 }
