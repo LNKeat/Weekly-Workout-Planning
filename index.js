@@ -19,10 +19,10 @@ let dropDown;
 
 document.addEventListener('DOMContentLoaded', () => {
   makeTodayCard()
-  document.querySelector('#btn-ex').addEventListener('click', getExercises)
-  document.querySelector('#btn-bp').addEventListener('click', getExercises)
-  document.querySelector('#btn-mg').addEventListener('click', getExercises)
-  document.querySelector('input.drop-down').addEventListener('change', getExercise)
+  document.querySelector('#btn-ex').addEventListener('click', getExercisesAPI)
+  document.querySelector('#btn-bp').addEventListener('click', getExercisesAPI)
+  document.querySelector('#btn-mg').addEventListener('click', getExercisesAPI)
+  document.querySelector('input.drop-down').addEventListener('change', getExerciseAPI)
   document.querySelector('#add-task').addEventListener('submit', handleForm)
   document.querySelector('#close').addEventListener('click', (location) => {
     toggleHidden(document.querySelector('#expanded'))
@@ -34,11 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
   dataInput = document.querySelector('input.drop-down')
   dataList = document.querySelector('#names')
   dropDown = document.querySelector('#narrowedDD')
-  getExercises('')
+  getExercisesAPI()
+  getExerciseData()
 })
 
 //fetches
-function getExercises(e){
+function getExercisesAPI(e){
   return fetch(`https://exercisedb.p.rapidapi.com/exercises`, {
     "method": "GET",
     "headers": {
@@ -49,14 +50,16 @@ function getExercises(e){
   .then(resp => resp.json())
   .then(exercises => {
     if(!e || e.target.value === 'name'){
+      dataList.hidden = false;
       buildExerciseDL(exercises, 'name')
+      dataList.hidden = true
     }else{
       const key = e.target.value //bodyPart or Target
       buildCategoryDD(exercises, key)
     }
   }) 
 }
-function getExercise(e){
+function getExerciseAPI(e){
   const name = e.target.value
   fetch(`https://exercisedb.p.rapidapi.com/exercises/name/${name}`, {
 	"method": "GET",
@@ -72,11 +75,6 @@ function getExercise(e){
 })
 .catch(error => alert("Exercise not found, please choose another"))
 }
-function getDays(e){
-    fetch('http://localhost:3000/days')
-    .then(resp => resp.json())
-    .then(days => practice(days))
-}
 function postExerciseData(obj){
   return fetch(`http://localhost:3000/exercises/`, {
     method: 'POST',
@@ -85,14 +83,27 @@ function postExerciseData(obj){
     },
     body:JSON.stringify(obj)
   })
+  .then(getExerciseData)
 }
 function getExerciseData(){
   return fetch('http://localhost:3000/exercises')
   .then(resp => resp.json())
+  .then(exerciseData => {
+    Object.keys(schedule).forEach(key => {
+      const workouts = exerciseData.filter(data => {
+        return data.days[key]
+      })
+      schedule[key] = workouts
+    })
+    return schedule
+  })
+  .then(handleDayCard)
 }
 
 
 //render functions
+//update today card to pull details from related day with checkboxes
+//add task list removal & celebration to day card
 function makeTodayCard(){
   let date = new Date()
   let today = new Intl.DateTimeFormat('en-US', { weekday: 'long'}).format(date)
@@ -104,8 +115,6 @@ function makeTodayCard(){
   section.appendChild(dayCard)
   dayCard.append(header)
 }
-//update today card to pull details from related day with checkboxes
-//add task list removal & celebration to day card
 
 function buildExerciseDL(exercises, key){
   let value;
@@ -202,56 +211,33 @@ function handleForm(e){
   }
   const checkboxes = document.querySelectorAll('input[name="day"]:checked')
   const days = []
+  //iterate through checkbox nodes with checks, save the day as a key with val = true
   checkboxes.forEach((checkbox) => {
     const day = checkbox.value
     exerciseObj.days[day] = true
   })
-  addExercise(exerciseObj)
+
+  postExerciseData(exerciseObj)
   resetForm()
 }
 
-
-
-function addExercise(exerciseObj){
-  for(const day in exerciseObj.days){
-    let exNum = 0
-    const dayCard = document.querySelector(`#d-${day}`)
-    const firstChar = document.querySelector(`#d-${day} p`).innerText[0]
-    if(parseInt(firstChar) >= 0){
-      exNum = parseInt(firstChar)
+//iterate through schedule & update days with exercise objects
+////upon exercise added, view button activated, num of exercises/day updated
+function handleDayCard(){
+  Object.keys(schedule).forEach(key => {
+    const dayCard = document.querySelector(`#d-${key}`)
+    const p = document.querySelector(`#d-${key} p`)
+    let exNum = schedule[key].length
+    if(exNum === 1){
+      p.innerText = `${exNum} exercise`
+      makeViewButtons(dayCard)
+    }else if(exNum > 1 && !dayCard.innerHTML.includes('</button>')){
+      p.innerText = `${exNum} exercises`
+      makeViewButtons(dayCard)
+    }else if(exNum > 1 && dayCard.innerHTML.includes('</button>')){
+      p.innerText = `${exNum} exercises`
     }
-    if(exerciseObj.days[day] === true){
-      const dayCard = document.querySelector(`#d-${day}`)
-      const p = document.querySelector(`#d-${day} p`)
-      if(exNum === 0){
-        const btn = document.createElement('button')
-        btn.className = "btns"
-        btn.innerText = "View"
-        dayCard.appendChild(btn)
-        p.innerText = `${++exNum} exercise`
-      }else if(exNum >= 1){
-        p.innerText = `${++exNum} exercises`
-      }else{ console.log('error: ',exNum)}
-      updateDayCard(exerciseObj, day)
-    }
-  }   
-}
-
-function updateDayCard(exerciseObj, day){
-  const viewBtn = document.querySelector(`#d-${day} button`)
-  viewBtn.addEventListener('click', (location) => expandDetails(dayCard))
-  postExerciseData(exerciseObj)
-  .then(() => getExerciseData())
-  .then(exerciseData => {
-    Object.keys(schedule).forEach(day => {
-      const workouts = exerciseData.filter(data => {
-        return data.days[day]
-      })
-      schedule[day] = workouts
-    })
-
-  })
-  console.log('schedule:', schedule)
+  })  
 }
 
 //helper functions
@@ -272,62 +258,50 @@ function resetForm(){
   confirmInputs.forEach(td => {
     td.textContent = ""
   })
-  toggleHidden(document.querySelector('#confirm-card'))
+  document.querySelector('#confirm-card').hidden = true
 }
 
-function clearInnerHTML(){
-
+function makeViewButtons(dayCard){
+  const viewBtn = document.createElement('button')
+  viewBtn.className = "btns"
+  viewBtn.innerText = "View"
+  viewBtn.addEventListener('click', (location) => expandDetails(dayCard))
+  dayCard.appendChild(viewBtn)
 }
 
-function expandDetails(day){
+function expandDetails(dayCard){
+  const fullDayName = event.target.previousSibling.previousSibling.previousSibling.previousSibling.innerText
   const detailsCard = document.querySelector('#expanded')
+  const detailsDiv = document.querySelector('#ex-info')
+  const header = document.querySelector('#expanded h2')
+  // const fullDayName = 
+  const day = dayCard.id.slice(2)
+  const dayArr = schedule[day]
   toggleHidden(detailsCard)
-  // const detailsDiv = document.createElement('div')
-  // detailsDiv.classList += "details"
-  // detailsDiv.hidden = true
-  // const ul = document.createElement('ul')
-  // const exerciseName = document.createElement('h3')
-  // exerciseName.innerText = `Exercise: ${exercise}`
-  // dayCard.appendChild(detailsDiv)
-  // detailsDiv.append(exerciseName, ul)
+  detailsDiv.innerHTML = ""
+  header.innerText = `${fullDayName}'s Details: `
 
-  // const detailsArr = [target, equipment, dis, dur, reps, weight, other]
-
-  // detailsArr.forEach(item => {
-  //   if(item !== ""){
-  //     const itemLi = document.createElement('li')
-  //     switch(true){
-  //       case (item === target):
-  //       itemLi.innerText = `Target Muscle: ${target}`
-  //       ul.appendChild(itemLi)
-  //       break;
-  //       case (item === equipment):
-  //       itemLi.innerText = `Equipment: ${equipment}`
-  //       ul.appendChild(itemLi)
-  //       break;
-  //       case (item === dis):
-  //       itemLi.innerText = `Distance: ${dis}`
-  //       ul.appendChild(itemLi)
-  //       break;
-  //       case (item === dur):
-  //       itemLi.innerText = `Duration: ${dur}`
-  //       ul.appendChild(itemLi)
-  //       break;
-  //       case (item === reps):
-  //       itemLi.innerText = `Reps: ${reps}`
-  //       ul.appendChild(itemLi)
-  //       break;
-  //       case (item === weight):
-  //       itemLi.innerText = `Weight: ${weight}`
-  //       ul.appendChild(itemLi)
-  //       break;
-  //       case (item === other):
-  //       itemLi.innerText = `Other goals: ${other}`
-  //       ul.appendChild(itemLi)
-  //       break;
-  //     }
-  //   }
-  // })
+  dayArr.forEach(exerciseObj => {
+    const ul = document.createElement('ul')
+    const exerciseName = document.createElement('h3')
+    exerciseName.innerText = exerciseObj.exercise
+    detailsDiv.append(exerciseName, ul)
+    // Object.keys(exerciseObj).forEach(key => {
+    //   const toInclude = ["exercise", "bodyPart", "target", "equipment", "goals"]
+    //   if(toInclude.includes(key)){
+    //     const keyli = document.createElement('li')
+    //     keyli.innerText = `key`
+    //   }
+    // })
+    
+    const bpli = document.createElement('li')
+    const weightli = document.createElement('li')
+    const targli = document.createElement('li')
+    const equipli = document.createElement('li')
+    bpli.innerText = ``
+    ul.append(bpli, targli, equipli, weightli)
+    
+  })
 }
 
 function toggleHidden(location){
@@ -335,9 +309,22 @@ function toggleHidden(location){
   location.hidden = !location.hidden
 }
 
+function upper(word){
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function titleize(str){
+  strArr = str.split(" ")
+  console.log(strArr)
+  return strArr.map(word => upper(word)).join(" ")
+}
 
 
 
+
+
+
+// run server: json-server --watch db.json
 
 // function buildDropDown(e){
 //   const key = e.target.value //parts, muscle, or names

@@ -17,11 +17,14 @@
   </header>
   <main>
 <!-- ****Day Bar**** -->
-    <section id="expanded">
+    <section id="expanded" hidden>
       <h2>Expanded</h2>
       <button id="close">X</button>
+      <div id="ex-info"></div>
     </section>
     <section id="day-bar">
+        <h3>Workout Overview for This Week</h3>
+        <p><em>Scroll down to add more workouts to your schedule</em></p>
         <div class="day" id="d-sun">
           <h2>Sunday</h2>
           <p>Rest day!</p>
@@ -52,23 +55,27 @@
         </div>
     
     </section>
+<!--***Daily Info Card***-->
+    <section  id="day-card">
+    </section>
 <!--***Add Workout Form***-->
     <section id="task-form">
       <!-- <form id="add-task"></form> -->
         <div id="dropdown">
         <h2>Add a workout to your schedule</h2>
         <div id="search-by">
-          <h3>Search By: </h3>
+          <h3>Search by: </h3>
+          <p><em>Narrow the search by body part or target muscle.</em></p>
           <button id="btn-ex" value="name" class="btns">Exercise Names</button>
           <button id="btn-bp" value="bodyPart" class="btns">Body Parts</button>
           <button id="btn-mg" value="target" class="btns">Target Muscle</button>
         </div>
-        <h3>Select a workout to add: </h3>
+        <h3>Choose a workout to add: </h3>
         <div id="dropdown-container" class="hide">
           <select name="category" id="narrowedDD" class="drop-down"></select>
         </div>
         <div id="datalist-container">
-          <input list="names" class='drop-down' placeholder="Search by exercise">
+          <input list="names" class='drop-down' placeholder="Input or Select an Exercise">
           <datalist id="names"></datalist>
         </div>
         <div id="confirm-card" hidden>
@@ -102,8 +109,19 @@
             </table>
         </div>
       <form id="add-task">
+        <div id="column-a">
+          <h3>Select the days to add workout <em style="color:rgb(154, 154, 207);">*required</em></h3>
+        
+          <input type="checkbox" name="day" id="c-sun" value="sun">Sunday <br>
+          <input type="checkbox" name="day" id="c-mon" value="mon">Monday <br>
+          <input type="checkbox" name="day" id="c-tue" value="tue">Tuesday <br>
+          <input type="checkbox" name="day" id="c-wed" value="wed">Wednesday <br>
+          <input type="checkbox" name="day" id="c-thu" value="thu">Thursday <br>
+          <input type="checkbox" name="day" id="c-fri" value="fri">Friday <br>
+          <input type="checkbox" name="day" id="c-sat" value="sat">Saturday <br>
+        </div>
         <div id="column-b">
-          <h3>Set your goals for this:</h3>
+          <h3>Set any goals for selected workout:</h3>
           <table id="goals">   
             <tr id="row-dis">
               <td>
@@ -154,24 +172,11 @@
 
           
         </div>
-        <div id="column-a">
-          <h3>Select the Days to Add Workout</h3>
-          <input type="checkbox" name="day" id="c-sun" value="sun">Sunday <br>
-          <input type="checkbox" name="day" id="c-mon" value="mon">Monday <br>
-          <input type="checkbox" name="day" id="c-tue" value="tue">Tuesday <br>
-          <input type="checkbox" name="day" id="c-wed" value="wed">Wednesday <br>
-          <input type="checkbox" name="day" id="c-thu" value="thu">Thursday <br>
-          <input type="checkbox" name="day" id="c-fri" value="fri">Friday <br>
-          <input type="checkbox" name="day" id="c-sat" value="sat">Saturday <br>
-        </div>
+        
         <div id="form-end">
           <input type="submit" value="Add Workout" class="button">
         </div>
       </form>
-    </section>
-
-<!--***Daily Info Card***-->
-    <section  id="day-card">
     </section>
     <footer>
 

@@ -1,13 +1,13 @@
 {
   "exercises": [
     {
-      "exercise": "alternate heel touchers",
+      "exercise": "air bike",
       "bodyPart": "waist",
       "target": "abs",
       "equipment": "body weight",
       "goals": {
         "dis": "",
-        "dur": "",
+        "dur": "30 min",
         "reps": "",
         "weight": "",
         "other": ""
@@ -16,7 +16,7 @@
         "sun": false,
         "mon": false,
         "tue": false,
-        "wed": true,
+        "wed": false,
         "thu": false,
         "fri": false,
         "sat": false
@@ -24,20 +24,20 @@
       "id": 1
     },
     {
-      "exercise": "",
-      "bodyPart": "",
-      "target": "",
-      "equipment": "",
+      "exercise": "air bike",
+      "bodyPart": "waist",
+      "target": "abs",
+      "equipment": "body weight",
       "goals": {
         "dis": "",
-        "dur": "",
+        "dur": "30 min",
         "reps": "",
         "weight": "",
         "other": ""
       },
       "days": {
         "sun": false,
-        "mon": false,
+        "mon": true,
         "tue": false,
         "wed": true,
         "thu": false,
@@ -45,236 +45,6 @@
         "sat": false
       },
       "id": 2
-    },
-    {
-      "exercise": "",
-      "bodyPart": "",
-      "target": "",
-      "equipment": "",
-      "goals": {
-        "dis": "",
-        "dur": "",
-        "reps": "",
-        "weight": "",
-        "other": ""
-      },
-      "days": {
-        "sun": false,
-        "mon": false,
-        "tue": false,
-        "wed": false,
-        "thu": true,
-        "fri": false,
-        "sat": false
-      },
-      "id": 3
-    },
-    {
-      "exercise": "",
-      "bodyPart": "",
-      "target": "",
-      "equipment": "",
-      "goals": {
-        "dis": "",
-        "dur": "",
-        "reps": "",
-        "weight": "",
-        "other": ""
-      },
-      "days": {
-        "sun": false,
-        "mon": false,
-        "tue": false,
-        "wed": true,
-        "thu": false,
-        "fri": false,
-        "sat": false
-      },
-      "id": 4
-    },
-    {
-      "exercise": "",
-      "bodyPart": "",
-      "target": "",
-      "equipment": "",
-      "goals": {
-        "dis": "",
-        "dur": "",
-        "reps": "",
-        "weight": "",
-        "other": ""
-      },
-      "days": {
-        "sun": false,
-        "mon": false,
-        "tue": false,
-        "wed": true,
-        "thu": false,
-        "fri": false,
-        "sat": false
-      },
-      "id": 5
-    },
-    {
-      "exercise": "",
-      "bodyPart": "",
-      "target": "",
-      "equipment": "",
-      "goals": {
-        "dis": "",
-        "dur": "",
-        "reps": "",
-        "weight": "",
-        "other": ""
-      },
-      "days": {
-        "sun": false,
-        "mon": false,
-        "tue": true,
-        "wed": false,
-        "thu": true,
-        "fri": false,
-        "sat": false
-      },
-      "id": 6
-    },
-    {
-      "exercise": "",
-      "bodyPart": "",
-      "target": "",
-      "equipment": "",
-      "goals": {
-        "dis": "",
-        "dur": "",
-        "reps": "",
-        "weight": "",
-        "other": ""
-      },
-      "days": {
-        "sun": false,
-        "mon": false,
-        "tue": true,
-        "wed": false,
-        "thu": true,
-        "fri": false,
-        "sat": false
-      },
-      "id": 7
-    },
-    {
-      "exercise": "alternate heel touchers",
-      "bodyPart": "waist",
-      "target": "abs",
-      "equipment": "body weight",
-      "goals": {
-        "dis": "",
-        "dur": "",
-        "reps": "",
-        "weight": "",
-        "other": ""
-      },
-      "days": {
-        "sun": true,
-        "mon": false,
-        "tue": false,
-        "wed": false,
-        "thu": false,
-        "fri": false,
-        "sat": false
-      },
-      "id": 8
-    },
-    {
-      "exercise": "alternate heel touchers",
-      "bodyPart": "waist",
-      "target": "abs",
-      "equipment": "body weight",
-      "goals": {
-        "dis": "3 miles",
-        "dur": "",
-        "reps": "",
-        "weight": "5",
-        "other": ""
-      },
-      "days": {
-        "sun": false,
-        "mon": false,
-        "tue": false,
-        "wed": true,
-        "thu": false,
-        "fri": false,
-        "sat": false
-      },
-      "id": 9
-    },
-    {
-      "exercise": "alternate lateral pulldown",
-      "bodyPart": "back",
-      "target": "lats",
-      "equipment": "cable",
-      "goals": {
-        "dis": "",
-        "dur": "",
-        "reps": "",
-        "weight": "",
-        "other": "technique focus"
-      },
-      "days": {
-        "sun": false,
-        "mon": true,
-        "tue": false,
-        "wed": true,
-        "thu": false,
-        "fri": true,
-        "sat": false
-      },
-      "id": 10
-    },
-    {
-      "exercise": "alternate lateral pulldown",
-      "bodyPart": "back",
-      "target": "lats",
-      "equipment": "cable",
-      "goals": {
-        "dis": "",
-        "dur": "",
-        "reps": "",
-        "weight": "",
-        "other": "technique focus"
-      },
-      "days": {
-        "sun": false,
-        "mon": true,
-        "tue": false,
-        "wed": true,
-        "thu": false,
-        "fri": true,
-        "sat": false
-      },
-      "id": 11
-    },
-    {
-      "exercise": "alternate lateral pulldown",
-      "bodyPart": "back",
-      "target": "lats",
-      "equipment": "cable",
-      "goals": {
-        "dis": "",
-        "dur": "",
-        "reps": "",
-        "weight": "",
-        "other": "technique focus"
-      },
-      "days": {
-        "sun": false,
-        "mon": true,
-        "tue": false,
-        "wed": true,
-        "thu": false,
-        "fri": true,
-        "sat": false
-      },
-      "id": 12
     }
   ]
 }

@@ -32,9 +32,9 @@ h3 {
   width: 80%; 
   height: 60%;
   top: 20%; 
-  padding: 10px;
+  padding: 30px;
   background-color: rgb(30, 30, 58);
-  text-align: center;
+  text-align: left;
   color: rgb(132, 132, 248);
   border: solid 1px black;
   border-radius: 25px;
@@ -45,25 +45,24 @@ h3 {
 #close {
   position: fixed;
   top:25%;
-  left: 85%;
+  left:90%;
 
 }
 
 #day-bar {
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding-top: 20px;
   padding-left: 4.5%;
   padding-right: 4.5%;
   color: rgb(30, 30, 58);
   background-color: rgb(132, 132, 248);
-  height: 200px;
+  height:250px;
   width: 100%;
   margin: 0;
 
 }
 .day {
   width: 12%;
-  height: 150px; 
+  height: 100px; 
   margin: .5%; 
   float:left;
   padding-top: 15px;
@@ -71,13 +70,14 @@ h3 {
   text-align: center;
   border: solid 1px rgb(30, 30, 58);
   border-radius: 25px;
-  color: rgb(30, 30, 58);
+  color: rgb(71, 68, 71);
 
 }
 #task-form{
-  display: inline-block;
+  float:left;
   text-align: left;
   width: 50%;
+  min-width: 400px;
   border-radius: 25px;
   color: rgb(32, 5, 32);
   margin-top: 3%;
@@ -123,12 +123,14 @@ h3 {
 }
 
 #column-a{
-  float: right;
-  width: 40%;
+  float: left;
+  width: 100px;
+  margin-left: 20px;
 }
 #column-b{
-  float: left; 
-  width: 60%;
+  float:left;
+  width: 150px;
+  margin-left: 40px;
 }
 #form-end{
   clear: both;
@@ -137,17 +139,19 @@ h3 {
   display:none
 }
 .text-input{
-  width: 100px;
+  width: 150px;
 }
 
 
 
 #day-card{
   float: right;
+  left: 60%;
+  top:40px;
   height: 200px;
   width: 20%;
   border-radius: 25px;
-  color: rgb(71, 68, 71);
+  color: rgb(30, 30, 58);
   margin-top: 3%;
   margin-left: 5%;
   margin-right: 5%;
