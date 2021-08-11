@@ -9,7 +9,7 @@ body {
 .header {
   margin-left: 10%;
   margin-right: 10%;
-  margin-top: 30px;
+  margin-top: 30prgb(30, 30, 58)x;
   margin-bottom: 30px;
   border-radius: 25px;
   padding: 50px;
@@ -26,6 +26,27 @@ h2 {
 h3 {
   font-size: 14px;
   text-align: left;
+}
+#expanded {
+  position: fixed; 
+  width: 80%; 
+  height: 60%;
+  top: 20%; 
+  padding: 10px;
+  background-color: rgb(30, 30, 58);
+  text-align: center;
+  color: rgb(132, 132, 248);
+  border: solid 1px black;
+  border-radius: 25px;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+#close {
+  position: fixed;
+  top:25%;
+  left: 85%;
+
 }
 
 #day-bar {
@@ -118,6 +139,7 @@ h3 {
 .text-input{
   width: 100px;
 }
+
 
 
 #day-card{

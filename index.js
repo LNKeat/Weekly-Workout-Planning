@@ -1,8 +1,22 @@
-
-
-
-
+const schedule = {
+  "sun": [],
+  "mon": [],
+  "tue": [],
+  "wed": [],
+  "thu": [],
+  "fri": [],
+  "sat": []
+}
+// global constants
+let dayBar;
+let taskForm;
+let dlContainer;
+let ddContainer;
+let dataInput;
+let dataList;
+let dropDown;
 //event listeners
+
 document.addEventListener('DOMContentLoaded', () => {
   makeTodayCard()
   document.querySelector('#btn-ex').addEventListener('click', getExercises)
@@ -10,21 +24,20 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('#btn-mg').addEventListener('click', getExercises)
   document.querySelector('input.drop-down').addEventListener('change', getExercise)
   document.querySelector('#add-task').addEventListener('submit', handleForm)
+  document.querySelector('#close').addEventListener('click', (location) => {
+    toggleHidden(document.querySelector('#expanded'))
+  })
+  dayBar = document.querySelector('#day-bar')
+  taskForm = document.querySelector('#add-task')
+  dlContainer = document.querySelector('#datalist-container')
+  ddContainer = document.querySelector('#dropdown-container')
+  dataInput = document.querySelector('input.drop-down')
+  dataList = document.querySelector('#names')
+  dropDown = document.querySelector('#narrowedDD')
   getExercises('')
 })
 
-//global constants
-// const dayBar = document.querySelector('#day-bar')
-// const taskForm = document.querySelector('#add-task')
-// const dlContainer = document.querySelector('#datalist-container')
-// const ddContainer = document.querySelector('#dropdown-container')
-// const dataInput = document.querySelector('input.drop-down')
-// const dataList = document.querySelector('#names')
-// const dropDown = document.querySelector('#narrowedDD')
-
-
-//FETCH get exercise names ---> make datalist or dropdown
-
+//fetches
 function getExercises(e){
   return fetch(`https://exercisedb.p.rapidapi.com/exercises`, {
     "method": "GET",
@@ -59,6 +72,26 @@ function getExercise(e){
 })
 .catch(error => alert("Exercise not found, please choose another"))
 }
+function getDays(e){
+    fetch('http://localhost:3000/days')
+    .then(resp => resp.json())
+    .then(days => practice(days))
+}
+function postExerciseData(obj){
+  return fetch(`http://localhost:3000/exercises/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body:JSON.stringify(obj)
+  })
+}
+function getExerciseData(){
+  return fetch('http://localhost:3000/exercises')
+  .then(resp => resp.json())
+}
+
+
 //render functions
 function makeTodayCard(){
   let date = new Date()
@@ -71,13 +104,10 @@ function makeTodayCard(){
   section.appendChild(dayCard)
   dayCard.append(header)
 }
-
+//update today card to pull details from related day with checkboxes
+//add task list removal & celebration to day card
 
 function buildExerciseDL(exercises, key){
-  const dropdown = document.querySelector('#narrowedDD')
-  const dlContainer = document.querySelector('#datalist-container')
-  const dataInput = document.querySelector('input.drop-down')
-  const dataList = document.querySelector('#names')
   let value;
   event ? value = event.target.value : value = 'name'
   dlContainer.innerHTML = ""
@@ -89,8 +119,8 @@ function buildExerciseDL(exercises, key){
   addOption(dataList, 'Select', '')
   //if no key... key is name
   if(key === 'name'){
-    dropdown.innerHTML = ""
-    dropdown.className = "hide"
+    dropDown.innerHTML = ""
+    dropDown.className = "hide"
     exercises.forEach(exercise => {
       const {name} = exercise
       addOption(dataList, name, name)
@@ -106,11 +136,6 @@ function buildExerciseDL(exercises, key){
 }
 
 function buildCategoryDD(exercises, key){
-  const dlContainer = document.querySelector('#datalist-container')
-  const ddContainer = document.querySelector('#dropdown-container')
-  const dropDown = document.querySelector('#narrowedDD')
-  const dataInput = document.querySelector('input.drop-down')
-  const dataList = document.querySelector('#names')
   dataList.innerHTML = ""
   dataInput.value = ""
   dlContainer.className = "hide"
@@ -153,12 +178,10 @@ function handleExSelect(exercise){
 
 function handleForm(e){
   e.preventDefault()
-  // console.log(e)
   const exerciseObj = {
-    userName: document.querySelector('#userName').value,
-    exerciseInput: document.querySelector('#nameInput').innerText,
+    exercise: document.querySelector('#nameInput').innerText,
     bodyPart: document.querySelector('#bpInput').innerText, 
-    targetMuscle: document.querySelector('#targetInput').innerText, 
+    target: document.querySelector('#targetInput').innerText, 
     equipment: document.querySelector('#equipInput').innerText,
     goals:{
       dis: document.querySelector('#goal-dis').value,
@@ -185,30 +208,55 @@ function handleForm(e){
   })
   addExercise(exerciseObj)
   resetForm()
-  getExercises()
 }
 
+
+
 function addExercise(exerciseObj){
-  //set daily exNum to increment with exercises added
-  //have exercise Obj persist
-  //add elistener to daycard buttons to view details
-  //update today card to pull details from related day with checkboxes
-  //add task list removal & celebration to day card
-  let exNum = 2;
   for(const day in exerciseObj.days){
+    let exNum = 0
+    const dayCard = document.querySelector(`#d-${day}`)
+    const firstChar = document.querySelector(`#d-${day} p`).innerText[0]
+    if(parseInt(firstChar) >= 0){
+      exNum = parseInt(firstChar)
+    }
     if(exerciseObj.days[day] === true){
       const dayCard = document.querySelector(`#d-${day}`)
-      const p = document.createElement('p')
-      const btn = document.createElement('button')
-      btn.className = "btns"
-      btn.innerText = "View"
-      exNum === 1 ? p.innerText = "1 exercise" : p.innerText = `${exNum} exercises`
-      dayCard.append(p, btn)
-    } 
+      const p = document.querySelector(`#d-${day} p`)
+      if(exNum === 0){
+        const btn = document.createElement('button')
+        btn.className = "btns"
+        btn.innerText = "View"
+        dayCard.appendChild(btn)
+        p.innerText = `${++exNum} exercise`
+      }else if(exNum >= 1){
+        p.innerText = `${++exNum} exercises`
+      }else{ console.log('error: ',exNum)}
+      updateDayCard(exerciseObj, day)
+    }
   }   
 }
 
+function updateDayCard(exerciseObj, day){
+  const viewBtn = document.querySelector(`#d-${day} button`)
+  viewBtn.addEventListener('click', (location) => expandDetails(dayCard))
+  postExerciseData(exerciseObj)
+  .then(() => getExerciseData())
+  .then(exerciseData => {
+    Object.keys(schedule).forEach(day => {
+      const workouts = exerciseData.filter(data => {
+        return data.days[day]
+      })
+      schedule[day] = workouts
+    })
+
+  })
+  console.log('schedule:', schedule)
+}
+
+//helper functions
 function resetForm(){
+  const confirmInputs = document.querySelectorAll('#confirm-card td.right')
   const inputs = document.querySelectorAll('input')
   for(let i = 1; i < 5; i++){
     let input = inputs[i]
@@ -221,7 +269,70 @@ function resetForm(){
   let userName = inputs[inputs.length - 2]
   userName.value = ""
   document.querySelector('#goal-oth').value = ""
+  confirmInputs.forEach(td => {
+    td.textContent = ""
+  })
+  toggleHidden(document.querySelector('#confirm-card'))
+}
 
+function clearInnerHTML(){
+
+}
+
+function expandDetails(day){
+  const detailsCard = document.querySelector('#expanded')
+  toggleHidden(detailsCard)
+  // const detailsDiv = document.createElement('div')
+  // detailsDiv.classList += "details"
+  // detailsDiv.hidden = true
+  // const ul = document.createElement('ul')
+  // const exerciseName = document.createElement('h3')
+  // exerciseName.innerText = `Exercise: ${exercise}`
+  // dayCard.appendChild(detailsDiv)
+  // detailsDiv.append(exerciseName, ul)
+
+  // const detailsArr = [target, equipment, dis, dur, reps, weight, other]
+
+  // detailsArr.forEach(item => {
+  //   if(item !== ""){
+  //     const itemLi = document.createElement('li')
+  //     switch(true){
+  //       case (item === target):
+  //       itemLi.innerText = `Target Muscle: ${target}`
+  //       ul.appendChild(itemLi)
+  //       break;
+  //       case (item === equipment):
+  //       itemLi.innerText = `Equipment: ${equipment}`
+  //       ul.appendChild(itemLi)
+  //       break;
+  //       case (item === dis):
+  //       itemLi.innerText = `Distance: ${dis}`
+  //       ul.appendChild(itemLi)
+  //       break;
+  //       case (item === dur):
+  //       itemLi.innerText = `Duration: ${dur}`
+  //       ul.appendChild(itemLi)
+  //       break;
+  //       case (item === reps):
+  //       itemLi.innerText = `Reps: ${reps}`
+  //       ul.appendChild(itemLi)
+  //       break;
+  //       case (item === weight):
+  //       itemLi.innerText = `Weight: ${weight}`
+  //       ul.appendChild(itemLi)
+  //       break;
+  //       case (item === other):
+  //       itemLi.innerText = `Other goals: ${other}`
+  //       ul.appendChild(itemLi)
+  //       break;
+  //     }
+  //   }
+  // })
+}
+
+function toggleHidden(location){
+  // console.log('location check: ', location)
+  location.hidden = !location.hidden
 }
 
 
@@ -251,7 +362,6 @@ function resetForm(){
 //     }
 //   })
 // }
-
 
 
 
@@ -295,28 +405,6 @@ function resetForm(){
 // }
 
 
-
-// function handleTaskSubmit(e){
-//   const formObject = {
-//     userName: "",
-//     exerciseInput: "",
-//     bodyPart: "",
-//     equipment: "", 
-//     id:  0,
-//     exName: "", 
-//     targetMuscle: "", 
-//     goals:{
-//       dis: "3 miles",
-//       dur: "< 32 min", 
-//       reps: "",
-//       weight: "", 
-//       other: "", 
-//       },
-//     days: {},
-//     }
-// }
-
-
 // function getStrengthExercises(search){
 //   const path = search ? `/${search}` : ''
 //   return fetch(`https://exercisedb.p.rapidapi.com/exercises${path}`, {
@@ -331,10 +419,7 @@ function resetForm(){
 // }
 
 
-
-
-
-
+//************************************* */
 
 
 // function buildTaskList(taskList){
@@ -356,3 +441,31 @@ function resetForm(){
 //   img.src = 'https://salesgravy.com/wp-content/uploads/2021/01/How-to-celebrate-success-in-the-pandemic.png'
 // }
 
+// {
+//   "users":[
+//     {
+//       "userName": "sample1",
+//       "id": 1,
+//       "exercise": "exercise1",
+//       "bodyPart": "full body", 
+//       "target": "all", 
+//       "equipment": "body weight",
+//       "goals":{
+//         "dis": "n/a",
+//         "dur": "20 min", 
+//         "reps": "5",
+//         "weight": "n/a", 
+//         "other": "focus on breathing technique"
+//         },
+//       "days": {
+//         "sun": true,
+//         "mon": false,
+//         "tue": false,
+//         "wed": true,
+//         "thu": false,
+//         "fri": true,
+//         "sat": false
+//       }
+//     }
+//   ]
+// }
