@@ -1,4 +1,4 @@
-const schedule = {
+let schedule = {
   "sun": [],
   "mon": [],
   "tue": [],
@@ -18,7 +18,7 @@ let dropDown;
 //event listeners
 
 document.addEventListener('DOMContentLoaded', () => {
-  makeTodayCard()
+  // makeTodayCard()
   document.querySelector('#btn-ex').addEventListener('click', getExercisesAPI)
   document.querySelector('#btn-bp').addEventListener('click', getExercisesAPI)
   document.querySelector('#btn-mg').addEventListener('click', getExercisesAPI)
@@ -98,6 +98,7 @@ function getExerciseData(){
     return schedule
   })
   .then(handleDayCard)
+  .then(makeTodayCard)
 }
 
 
@@ -105,15 +106,20 @@ function getExerciseData(){
 //update today card to pull details from related day with checkboxes
 //add task list removal & celebration to day card
 function makeTodayCard(){
-  let date = new Date()
-  let today = new Intl.DateTimeFormat('en-US', { weekday: 'long'}).format(date)
-  let section = document.querySelector('#day-card')
-  let dayCard = document.createElement('div')
-  let header = document.createElement('h2')
-  dayCard.class = "day";
+  const date = new Date()
+  const today = new Intl.DateTimeFormat('en-US', { weekday: 'long'}).format(date)
+  const section = document.querySelector('#day-card')
+  const div = document.createElement('div')
+  const header = document.createElement('h2')
+  const p = document.createElement('p')
+  const dayAbrev = today.slice(0, 3).toLowerCase()
+  const dayCard = document.getElementById(`d-${dayAbrev}`)
+  p.style.textAlign = 'left'
+  p.innerText = 'Exercise details for today:'
+  div.id = "today-details"
   header.textContent = `Today is ${today}!`
-  section.appendChild(dayCard)
-  dayCard.append(header)
+  section.append(header, p, div)
+  populateDetails(div, dayAbrev)
 }
 
 function buildExerciseDL(exercises, key){
@@ -274,34 +280,38 @@ function expandDetails(dayCard){
   const detailsCard = document.querySelector('#expanded')
   const detailsDiv = document.querySelector('#ex-info')
   const header = document.querySelector('#expanded h2')
-  // const fullDayName = 
   const day = dayCard.id.slice(2)
-  const dayArr = schedule[day]
+  header.innerText = `${fullDayName}'s Exercise Details: `
   toggleHidden(detailsCard)
-  detailsDiv.innerHTML = ""
-  header.innerText = `${fullDayName}'s Details: `
+  populateDetails(detailsDiv, day)
+}
 
+function populateDetails(location, day){
+  const dayArr = schedule[day]
+  location.innerHTML = ""
+  console.log(dayArr)
   dayArr.forEach(exerciseObj => {
+    const {exercise, bodyPart, target, equipment, goals} = exerciseObj
+    const {dis, dur, reps, weight, other} = goals
+    const details = [bodyPart, target, equipment, dis, dur, reps, weight, other]
     const ul = document.createElement('ul')
-    const exerciseName = document.createElement('h3')
-    exerciseName.innerText = exerciseObj.exercise
-    detailsDiv.append(exerciseName, ul)
-    // Object.keys(exerciseObj).forEach(key => {
-    //   const toInclude = ["exercise", "bodyPart", "target", "equipment", "goals"]
-    //   if(toInclude.includes(key)){
-    //     const keyli = document.createElement('li')
-    //     keyli.innerText = `key`
-    //   }
-    // })
-    
-    const bpli = document.createElement('li')
-    const weightli = document.createElement('li')
-    const targli = document.createElement('li')
-    const equipli = document.createElement('li')
-    bpli.innerText = ``
-    ul.append(bpli, targli, equipli, weightli)
-    
+    const h4 = document.createElement('h4')
+    h4.innerText = titleize(exercise)
+    location.append(h4, ul)
+   
   })
+    
+  // details.forEach(item => {
+    //   WRITE SWITCH
+    // })
+
+    // const bpli = document.createElement('li')
+    // const weightli = document.createElement('li')
+    // const targli = document.createElement('li')
+    // const equipli = document.createElement('li')
+    // bpli.innerText = ``
+    // ul.append(bpli, targli, equipli, weightli)
+
 }
 
 function toggleHidden(location){
@@ -315,7 +325,6 @@ function upper(word){
 
 function titleize(str){
   strArr = str.split(" ")
-  console.log(strArr)
   return strArr.map(word => upper(word)).join(" ")
 }
 

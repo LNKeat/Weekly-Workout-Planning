@@ -142,8 +142,6 @@ h3 {
   width: 150px;
 }
 
-
-
 #day-card{
   float: right;
   left: 60%;
@@ -158,6 +156,10 @@ h3 {
   text-align: center;
   padding: 20px;
   background: rgb(98, 98, 184);
+}
+
+#today-details {
+  text-align: left;
 }
 
 footer{
