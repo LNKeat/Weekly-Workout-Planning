@@ -1,19 +1,19 @@
 {
   "exercises": [
     {
-      "exercise": "air bike",
+      "exercise": "arm slingers hanging bent knee legs",
       "bodyPart": "waist",
       "target": "abs",
       "equipment": "body weight",
       "goals": {
         "dis": "",
-        "dur": "30 min",
-        "reps": "",
+        "dur": "30 seconds",
+        "reps": "5",
         "weight": "",
         "other": ""
       },
       "days": {
-        "sun": false,
+        "sun": true,
         "mon": false,
         "tue": false,
         "wed": false,
@@ -24,22 +24,22 @@
       "id": 1
     },
     {
-      "exercise": "air bike",
-      "bodyPart": "waist",
-      "target": "abs",
-      "equipment": "body weight",
+      "exercise": "barbell good morning",
+      "bodyPart": "upper legs",
+      "target": "hamstrings",
+      "equipment": "barbell",
       "goals": {
         "dis": "",
-        "dur": "30 min",
-        "reps": "",
-        "weight": "",
+        "dur": "",
+        "reps": "2 x 8",
+        "weight": "20 lbs",
         "other": ""
       },
       "days": {
-        "sun": false,
-        "mon": true,
+        "sun": true,
+        "mon": false,
         "tue": false,
-        "wed": true,
+        "wed": false,
         "thu": false,
         "fri": false,
         "sat": false

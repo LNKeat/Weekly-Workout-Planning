@@ -15,10 +15,9 @@ let ddContainer;
 let dataInput;
 let dataList;
 let dropDown;
-//event listeners
 
+//event listeners
 document.addEventListener('DOMContentLoaded', () => {
-  // makeTodayCard()
   document.querySelector('#btn-ex').addEventListener('click', getExercisesAPI)
   document.querySelector('#btn-bp').addEventListener('click', getExercisesAPI)
   document.querySelector('#btn-mg').addEventListener('click', getExercisesAPI)
@@ -42,18 +41,20 @@ document.addEventListener('DOMContentLoaded', () => {
 function getExercisesAPI(e){
   return fetch(`https://exercisedb.p.rapidapi.com/exercises`, {
     "method": "GET",
-    "headers": {
-      "x-rapidapi-key": "975aac47bbmshce4e51ae3a1f0e0p1d7a52jsn9be6aa842dbe",
-      "x-rapidapi-host": "exercisedb.p.rapidapi.com"
-    }
+    "headers": apiKey
   })
   .then(resp => resp.json())
   .then(exercises => {
-    if(!e || e.target.value === 'name'){
+    if(!e){
+      buildExerciseDL(exercises, 'name')
+      document.querySelector('#all-search').hidden = true
+    }else if(e.target.value === 'name'){
+      document.querySelector('#all-search').hidden = false
       dataList.hidden = false;
       buildExerciseDL(exercises, 'name')
       dataList.hidden = true
     }else{
+            document.querySelector('#all-search').hidden = false
       const key = e.target.value //bodyPart or Target
       buildCategoryDD(exercises, key)
     }
@@ -63,10 +64,7 @@ function getExerciseAPI(e){
   const name = e.target.value
   fetch(`https://exercisedb.p.rapidapi.com/exercises/name/${name}`, {
 	"method": "GET",
-	"headers": {
-		"x-rapidapi-key": "975aac47bbmshce4e51ae3a1f0e0p1d7a52jsn9be6aa842dbe",
-		"x-rapidapi-host": "exercisedb.p.rapidapi.com"
-	}
+	"headers": apiKey
 })
 .then(resp => resp.json())
 .then(exercises => {
@@ -102,9 +100,9 @@ function getExerciseData(){
 }
 
 
+
+
 //render functions
-//update today card to pull details from related day with checkboxes
-//add task list removal & celebration to day card
 function makeTodayCard(){
   const date = new Date()
   const today = new Intl.DateTimeFormat('en-US', { weekday: 'long'}).format(date)
@@ -114,6 +112,7 @@ function makeTodayCard(){
   const p = document.createElement('p')
   const dayAbrev = today.slice(0, 3).toLowerCase()
   const dayCard = document.getElementById(`d-${dayAbrev}`)
+  section.innerHTML = ""
   p.style.textAlign = 'left'
   p.innerText = 'Exercise details for today:'
   div.id = "today-details"
@@ -192,7 +191,7 @@ function handleExSelect(exercise){
 }
 
 function handleForm(e){
-  e.preventDefault()
+  // e.preventDefault()
   const exerciseObj = {
     exercise: document.querySelector('#nameInput').innerText,
     bodyPart: document.querySelector('#bpInput').innerText, 
@@ -227,16 +226,16 @@ function handleForm(e){
   resetForm()
 }
 
-//iterate through schedule & update days with exercise objects
-////upon exercise added, view button activated, num of exercises/day updated
 function handleDayCard(){
   Object.keys(schedule).forEach(key => {
     const dayCard = document.querySelector(`#d-${key}`)
     const p = document.querySelector(`#d-${key} p`)
     let exNum = schedule[key].length
-    if(exNum === 1){
+    if(exNum === 1 && !dayCard.innerHTML.includes('</button>')){
       p.innerText = `${exNum} exercise`
       makeViewButtons(dayCard)
+    }else if(exNum === 1){
+      p.innerText = `${exNum} exercise`
     }else if(exNum > 1 && !dayCard.innerHTML.includes('</button>')){
       p.innerText = `${exNum} exercises`
       makeViewButtons(dayCard)
@@ -250,16 +249,16 @@ function handleDayCard(){
 function resetForm(){
   const confirmInputs = document.querySelectorAll('#confirm-card td.right')
   const inputs = document.querySelectorAll('input')
-  for(let i = 1; i < 5; i++){
+  
+  for(let i = 8; i < 12; i++){
     let input = inputs[i]
     input.value = ""
   }
-  for(let i = 5; i < 12; i++){
+  for(let i = 1; i < 8; i++){
     let checkbox = inputs[i]
     checkbox.checked = false;
   }
-  let userName = inputs[inputs.length - 2]
-  userName.value = ""
+
   document.querySelector('#goal-oth').value = ""
   confirmInputs.forEach(td => {
     td.textContent = ""
@@ -282,7 +281,7 @@ function expandDetails(dayCard){
   const header = document.querySelector('#expanded h2')
   const day = dayCard.id.slice(2)
   header.innerText = `${fullDayName}'s Exercise Details: `
-  toggleHidden(detailsCard)
+  detailsCard.hidden = false
   populateDetails(detailsDiv, day)
 }
 
@@ -298,12 +297,62 @@ function populateDetails(location, day){
     const h4 = document.createElement('h4')
     h4.innerText = titleize(exercise)
     location.append(h4, ul)
+    details.forEach(item => {
+      if(item !== ''){
+        const li = document.createElement('li')
+        li.innerText = item
+        li.id = `li-${item}`
+        ul.appendChild(li)
+
+        switch(item){
+          case bodyPart: 
+          if(item !== ''){
+            li.innerText = `Body part: ${bodyPart}`
+          };
+          break;
+          case target:
+            if(item !== ''){
+              li.innerText = `Target muscle: ${target}`
+            }; 
+          break;
+          case equipment: 
+          if(item !== ''){
+            li.innerText = `Equipment: ${equipment}`
+          };
+          
+          break;
+          case dis: 
+          if(item !== ''){
+            li.innerText = `Distance: ${dis}`
+          };
+          break;
+          case dur: 
+          if(item !== ''){
+            li.innerText = `Duration: ${dur}`
+          };
+          break;
+          case reps: 
+          if(item !== ''){
+            li.innerText = `Reps: ${reps}`
+          };
+          break;
+          case weight: 
+          if(item !== ''){
+            li.innerText = `Weight: ${weight}`
+          };
+          break;
+          case other: 
+          if(item !== ''){
+            li.innerText = `Other: ${other}`
+          };
+          break;
+
+        }
+      }
+    })
    
   })
-    
-  // details.forEach(item => {
-    //   WRITE SWITCH
-    // })
+  
 
     // const bpli = document.createElement('li')
     // const weightli = document.createElement('li')
@@ -312,6 +361,10 @@ function populateDetails(location, day){
     // bpli.innerText = ``
     // ul.append(bpli, targli, equipli, weightli)
 
+}
+
+function createLi(ele){
+  
 }
 
 function toggleHidden(location){
@@ -334,134 +387,3 @@ function titleize(str){
 
 
 // run server: json-server --watch db.json
-
-// function buildDropDown(e){
-//   const key = e.target.value //parts, muscle, or names
-//   const ddList = document.querySelector('#workout-list')
-//   const container = document.querySelector('#workoutDD-container')
-//   container.innerHTML = ""
-//   ddList.innerHTML = ""
-//   ddList.name = key
-//   getStrengthExercises()
-//   .then(exercises => {
-//     const values = exercises.reduce((result, exercise) => {
-//       if(!result.includes(exercise[key])){
-//         result.push(exercise[key])
-//       }
-//       return result
-//     }, [])
-
-//     addOption(ddList, "Select", "")
-//     for(const value of values){
-//       addOption(ddList, value, value)
-     
-//     }
-//   })
-// }
-
-
-
-// function handleWorkoutChange(e){
-//   const {name, value} = e.target
-//   console.log('name', name, 'value', value)
-//   getStrengthExercises(`${name}/${encodeURIComponent(value)}`)
-//   .then(exercises => {
-//     if(name === 'name'){
-//       addToForm(value)
-//     }else{
-//       buildExerciseDD(exercises)
-//     }
-//   })
-//   .catch(error => alert("Exercise not found"))
-// }
-
-// function buildExerciseDD(exercises){
-//   const container = document.querySelector('#workoutDD-container')
-//   container.innerHTML = ""
-//   const dropDown = document.createElement('select')
-//   dropDown.className = "drop-down"
-//   dropDown.addEventListener('change', (e) => addToForm(e.target.value))
-//   container.appendChild(dropDown)
-//   addOption(dropDown, 'Select', '')
-//   exercises.forEach(exercise => {
-//     const {name} = exercise
-//     addOption(dropDown, name, name)
-//   })
-// }
-
-// 
-
-// function addToForm(val){
-//   getStrengthExercises(`name/${val}`)
-//   .then(exercises => {
-//     const exercise = exercises[0]
-//     // const [exercise] = exercises
-//     console.log(exercise)
-//   } )
-// }
-
-
-// function getStrengthExercises(search){
-//   const path = search ? `/${search}` : ''
-//   return fetch(`https://exercisedb.p.rapidapi.com/exercises${path}`, {
-// 	"method": "GET",
-// 	"headers": {
-// 		"x-rapidapi-key": "975aac47bbmshce4e51ae3a1f0e0p1d7a52jsn9be6aa842dbe",
-// 		"x-rapidapi-host": "exercisedb.p.rapidapi.com"
-// 	}
-// })
-// .then(resp => resp.json())
-// .then(exercises => exercises)
-// }
-
-
-//************************************* */
-
-
-// function buildTaskList(taskList){
-//   let li = document.createElement('li')
-//   let btn = document.createElement('button')
-//   btn.addEventListener('click', handleDelete)
-//   btn.textContent = ' X'
-//   li.textContent = `${taskList}  `;
-//   li.appendChild(btn)
-//   document.querySelector('#tasks').appendChild(li)
-// }
-
-// function allTasksRemoved(){
-//   let imgDiv = document.createElement('div')
-//   let img = document.createElement('img')
-//   imgDiv.appendChild(img)
-//   document.querySelector('div#list').appendChild(imgDiv)
-//   img.id = 'celebrate_image'
-//   img.src = 'https://salesgravy.com/wp-content/uploads/2021/01/How-to-celebrate-success-in-the-pandemic.png'
-// }
-
-// {
-//   "users":[
-//     {
-//       "userName": "sample1",
-//       "id": 1,
-//       "exercise": "exercise1",
-//       "bodyPart": "full body", 
-//       "target": "all", 
-//       "equipment": "body weight",
-//       "goals":{
-//         "dis": "n/a",
-//         "dur": "20 min", 
-//         "reps": "5",
-//         "weight": "n/a", 
-//         "other": "focus on breathing technique"
-//         },
-//       "days": {
-//         "sun": true,
-//         "mon": false,
-//         "tue": false,
-//         "wed": true,
-//         "thu": false,
-//         "fri": true,
-//         "sat": false
-//       }
-//     }
-//   ]
-// }

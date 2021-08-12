@@ -3,19 +3,27 @@
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 body {
-  background-image: linear-gradient(rgb(98, 98, 184), rgb(30, 30, 58))
+  background-image: linear-gradient(rgb(67, 25, 252), rgb(21, 12, 63));
 }
+/* background-image: linear-gradient(rgb(98, 98, 184), rgb(30, 30, 58)) 
+lightest: rgb(234, 231, 238)
+daybar: rgb(50, 28, 146)
+darkest: rgb(34, 20, 94)
+*/
 
 .header {
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
   margin-top: 30prgb(30, 30, 58)x;
   margin-bottom: 30px;
+  border-style: ridge;
+  border-color: rgb(35, 17, 116);
   border-radius: 25px;
   padding: 50px;
   text-align: center;
-  background: rgb(98, 98, 184);
-  color:black;
+  background: grey;
+  color:rgb(35, 17, 116);
 }
 h1{
   font-size: 30px;
@@ -35,11 +43,12 @@ h3 {
   padding: 30px;
   background-color: rgb(30, 30, 58);
   text-align: left;
-  color: rgb(132, 132, 248);
+  color: rgb(67, 25, 252);
   border: solid 1px black;
   border-radius: 25px;
   margin-left: 10%;
   margin-right: 10%;
+  z-index: 99;
 }
 
 #close {
@@ -50,50 +59,55 @@ h3 {
 }
 
 #day-bar {
-  padding-top: 20px;
-  padding-left: 4.5%;
-  padding-right: 4.5%;
-  color: rgb(30, 30, 58);
-  background-color: rgb(132, 132, 248);
+  padding: 20px;
+  align-content: center;
+  color: grey;
+  background-color: rgb(41, 19, 139);
   height:250px;
   width: 100%;
-  margin: 0;
 
 }
 .day {
-  width: 12%;
+  width: 110px;
   height: 100px; 
-  margin: .5%; 
+  margin-left: 2%;
+  /* margin: 5px;  */
   float:left;
   padding-top: 15px;
   padding-bottom: 15px;
   text-align: center;
-  border: solid 1px rgb(30, 30, 58);
+  border: solid 4px grey;
   border-radius: 25px;
-  color: rgb(71, 68, 71);
+  color: grey;
 
 }
 #task-form{
   float:left;
   text-align: left;
-  width: 50%;
   min-width: 400px;
   border-radius: 25px;
-  color: rgb(32, 5, 32);
+  color: black;
   margin-top: 3%;
-  margin-left: 5%;
-  padding: 20px;
-  background: rgb(98, 98, 184);
+  margin-left: 10%;
+  margin-bottom: 100px;
+  padding: 10px;
+  background: rgb(67, 25, 252);
 }
+.drop-down{
+  width: 300px;
+}
+
+#search-by{
+  padding-left: 10px;
+}
+#all-search{
+  text-align: right;
+}
+
+
 .btns{
-  display: inline-block;
   text-align: center;
   padding: 2px;
-}
-
-
-.drop-down {
-  width: 200px;
 }
 
 .text{
@@ -146,16 +160,16 @@ h3 {
   float: right;
   left: 60%;
   top:40px;
-  height: 200px;
-  width: 20%;
+  height:fit-content;
+  width: 25%;
   border-radius: 25px;
-  color: rgb(30, 30, 58);
+  color: black;
   margin-top: 3%;
   margin-left: 5%;
   margin-right: 5%;
   text-align: center;
   padding: 20px;
-  background: rgb(98, 98, 184);
+  background: rgb(67, 25, 252);
 }
 
 #today-details {
