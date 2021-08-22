@@ -8,6 +8,7 @@ let schedule = {
   "sat": []
 }
 // global constants
+const configHeader = apiKey
 let dayBar;
 let taskForm;
 let dlContainer;
@@ -38,10 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 //fetches
+/*GET request to pull all exercises from exerciseDB
+if called on page load or on search by name event: build datalist
+if called on search by target/bodyPart event: build dropdown of specifics
+hide/unhide neccesary lists */
 function getExercisesAPI(e){
   return fetch(`https://exercisedb.p.rapidapi.com/exercises`, {
     "method": "GET",
-    "headers": apiKey
+    "headers": configHeader
   })
   .then(resp => resp.json())
   .then(exercises => {
@@ -52,7 +57,7 @@ function getExercisesAPI(e){
       document.querySelector('#all-search').hidden = false
       dataList.hidden = false;
       buildExerciseDL(exercises, 'name')
-      dataList.hidden = true
+      // dataList.hidden = true
     }else{
             document.querySelector('#all-search').hidden = false
       const key = e.target.value //bodyPart or Target
@@ -60,11 +65,12 @@ function getExercisesAPI(e){
     }
   }) 
 }
+/*fetch single exercise to populate hidden form and alert if not found */
 function getExerciseAPI(e){
   const name = e.target.value
   fetch(`https://exercisedb.p.rapidapi.com/exercises/name/${name}`, {
 	"method": "GET",
-	"headers": apiKey
+	"headers": configHeader
 })
 .then(resp => resp.json())
 .then(exercises => {
@@ -73,6 +79,7 @@ function getExerciseAPI(e){
 })
 .catch(error => alert("Exercise not found, please choose another"))
 }
+/*POST data from user's form on submit to db.json */
 function postExerciseData(obj){
   return fetch(`http://localhost:3000/exercises/`, {
     method: 'POST',
@@ -83,26 +90,36 @@ function postExerciseData(obj){
   })
   .then(getExerciseData)
 }
+
+/* 
+fetch on page load to populate each day & TODAY with exercises
+also fetch all user's exercises immediately after POST to update DOM*/
 function getExerciseData(){
   return fetch('http://localhost:3000/exercises')
   .then(resp => resp.json())
   .then(exerciseData => {
+    /*iterate through days (keys in sched) 
+    create workouts variable with filtered exercises associated with (true/false values on each day)
+    return newly populated schedule where each day/key has a value of an array of exercise objects*/
     Object.keys(schedule).forEach(key => {
-      const workouts = exerciseData.filter(data => {
-        return data.days[key]
+      const workouts = exerciseData.filter(exercise => {
+        return exercise.days[key]
       })
+      console.log('key: ', key, 'workouts var: ', workouts)
       schedule[key] = workouts
     })
     return schedule
+    
   })
   .then(handleDayCard)
   .then(makeTodayCard)
 }
 
 
-
-
 //render functions
+
+/*Add current day to card
+ sets up day format & invokes function to add detailed view of exercise(s)*/
 function makeTodayCard(){
   const date = new Date()
   const today = new Intl.DateTimeFormat('en-US', { weekday: 'long'}).format(date)
@@ -121,9 +138,14 @@ function makeTodayCard(){
   populateDetails(div, dayAbrev)
 }
 
+/* 
+invoked on DOM loaded, search by exercise name click & on dropdown selected
+build & unhide datalist, takes 2 args: exercises from API & key: Name, bp or target
+ set conditional so DL changes with click compares value of event (if click event) to key
+ iterates through API objects to show exercise names or narrowed list of exercise names*/
 function buildExerciseDL(exercises, key){
   let value;
-  event ? value = event.target.value : value = 'name'
+  event ? value = event.target.value : null;
   dlContainer.innerHTML = ""
   dataList.innerHTML = ""
   dlContainer.className = "drop-down"
@@ -149,6 +171,10 @@ function buildExerciseDL(exercises, key){
   } 
 }
 
+
+/* invoked on click event only to search by key, key assigned by click event
+ reset lists & dropdowns 
+ invoke build datalist once dd selected with new key (from click event value) */
 function buildCategoryDD(exercises, key){
   dataList.innerHTML = ""
   dataInput.value = ""
@@ -159,12 +185,14 @@ function buildCategoryDD(exercises, key){
   dropDown.addEventListener('change', () => {
     buildExerciseDL(exercises, key)
   })
+  /*checks for all possible keys and removes duplicates, displaying each key once*/
   const reducedExercises = exercises.reduce((result, exercise) => {
     if(!result.includes(exercise[key])){
       result.push(exercise[key])
     }
     return result
   }, [])
+  /* adds options after iterating through the reduced key list */
   addOption(dropDown, 'Select', '')
   reducedExercises.forEach(exercise => {
     addOption(dropDown, exercise, exercise)
@@ -172,6 +200,9 @@ function buildCategoryDD(exercises, key){
   
 }
 
+/*add option to datalist or dropdown list based on dropdown selection(narrowed) 
+or search by name
+ takes args of the list name to populate, the text and value to be used for fetching single ex*/
 function addOption(list, innerText, value){
   let option = document.createElement('option')
   option.innerText = innerText
@@ -179,6 +210,9 @@ function addOption(list, innerText, value){
   list.appendChild(option)
 }
 
+
+/*invoked in single exercise fetch upon click event in datalist (exercise selection)
+populates form with exercise details from API*/
 function handleExSelect(exercise){
   const {name, bodyPart, equipment, target} = exercise
   document.querySelector('#confirm-card').hidden = false
@@ -190,6 +224,10 @@ function handleExSelect(exercise){
   document.querySelector('#equipInput').innerText = equipment
 }
 
+
+/* invoked on submit click event
+take data from populated form & creates json object
+send new exercise object to be posted to db.json & reset form */
 function handleForm(e){
   // e.preventDefault()
   const exerciseObj = {
@@ -226,6 +264,11 @@ function handleForm(e){
   resetForm()
 }
 
+
+/* invoked upon fetching data from db.json (after schedule is populated)
+iterate through days of week (schedule object, days are key, 
+  values arr of exercise objects assigned to each day)
+set num of exercises to length of value array from schedule*/
 function handleDayCard(){
   Object.keys(schedule).forEach(key => {
     const dayCard = document.querySelector(`#d-${key}`)
@@ -288,7 +331,7 @@ function expandDetails(dayCard){
 function populateDetails(location, day){
   const dayArr = schedule[day]
   location.innerHTML = ""
-  console.log(dayArr)
+  console.log('fxn: popDetails dayArr: ', dayArr)
   dayArr.forEach(exerciseObj => {
     const {exercise, bodyPart, target, equipment, goals} = exerciseObj
     const {dis, dur, reps, weight, other} = goals
@@ -352,15 +395,6 @@ function populateDetails(location, day){
     })
    
   })
-  
-
-    // const bpli = document.createElement('li')
-    // const weightli = document.createElement('li')
-    // const targli = document.createElement('li')
-    // const equipli = document.createElement('li')
-    // bpli.innerText = ``
-    // ul.append(bpli, targli, equipli, weightli)
-
 }
 
 function createLi(ele){
@@ -380,9 +414,6 @@ function titleize(str){
   strArr = str.split(" ")
   return strArr.map(word => upper(word)).join(" ")
 }
-
-
-
 
 
 

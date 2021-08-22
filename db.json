@@ -24,27 +24,50 @@
       "id": 1
     },
     {
-      "exercise": "barbell good morning",
-      "bodyPart": "upper legs",
-      "target": "hamstrings",
-      "equipment": "barbell",
+      "exercise": "ski step",
+      "bodyPart": "cardio",
+      "target": "cardiovascular system",
+      "equipment": "body weight",
       "goals": {
-        "dis": "",
+        "dis": "3 miles",
         "dur": "",
-        "reps": "2 x 8",
-        "weight": "20 lbs",
-        "other": ""
+        "reps": "20",
+        "weight": "",
+        "other": "Focus on breathing"
       },
       "days": {
         "sun": true,
         "mon": false,
-        "tue": false,
-        "wed": false,
+        "tue": true,
+        "wed": true,
         "thu": false,
         "fri": false,
         "sat": false
       },
       "id": 2
+    },
+    {
+      "exercise": "barbell standing leg calf raise",
+      "bodyPart": "lower legs",
+      "target": "calves",
+      "equipment": "barbell",
+      "goals": {
+        "dis": "",
+        "dur": "",
+        "reps": "5k",
+        "weight": "",
+        "other": ""
+      },
+      "days": {
+        "sun": false,
+        "mon": true,
+        "tue": false,
+        "wed": true,
+        "thu": false,
+        "fri": true,
+        "sat": false
+      },
+      "id": 3
     }
   ]
 }
