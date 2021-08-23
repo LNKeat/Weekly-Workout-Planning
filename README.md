@@ -18,7 +18,7 @@ The goal was to be able to easily store workouts into a weekly calendar at the b
 ### Add the exercise to weekly calendar
  - user can add any exercise to as many week days as they would like
  - user can add custom goals to any exercise
-    -ie: distance to run, repeatitions or duration on an exercise, weight and other goals that may require very specific custom input
+    - ie: distance to run, repeatitions or duration on an exercise, weight and other goals that may require very specific custom input
  - once the user submits the form these exercise automatically populate into the weekly calendar and the today card (if exercise were added for that day)
  ### View daily details
  - user can view the details for any day of the week by clicking on the "view" button associated with a specific day to reveal a pop-up window with exercise details
