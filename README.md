@@ -34,8 +34,7 @@ The goal was to be able to easily store workouts into a weekly calendar at the b
  Clone the repository into your local environment
  Request an API key in one of two ways: 
  1) Request a free API key directly from rapidapi.com by signing up or logging in to your own account:   https://rapidapi.com/justin-WFnsXH_t6/api/exercisedb/
- 2) Contact Laura directly to borrow one that expires in 24 hours.  
- -LNKEAT@gmail.com
+ 2) Contact Laura (for folks that know her) directly to borrow one that expires in 24 hours.  
 
  In the index.js file, at the top with the global variables, replace the value of configAPI with your API key string
  ```
