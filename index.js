@@ -8,7 +8,7 @@ let schedule = {
   "sat": []
 }
 // global constants
-const configHeader = apiKey
+const configAPI = apiKey
 let dayBar;
 let taskForm;
 let dlContainer;
@@ -46,7 +46,10 @@ hide/unhide neccesary lists */
 function getExercisesAPI(e){
   return fetch(`https://exercisedb.p.rapidapi.com/exercises`, {
     "method": "GET",
-    "headers": configHeader
+    "headers": {
+      'x-rapidapi-key': configAPI,
+      'x-rapidapi-host': 'exercisedb.p.rapidapi.com'
+    } 
   })
   .then(resp => resp.json())
   .then(exercises => {
@@ -70,7 +73,10 @@ function getExerciseAPI(e){
   const name = e.target.value
   fetch(`https://exercisedb.p.rapidapi.com/exercises/name/${name}`, {
 	"method": "GET",
-	"headers": configHeader
+	"headers": {
+    'x-rapidapi-key': configAPI,
+    'x-rapidapi-host': 'exercisedb.p.rapidapi.com'
+  } 
 })
 .then(resp => resp.json())
 .then(exercises => {
