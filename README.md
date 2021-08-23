@@ -39,7 +39,8 @@ The goal was to be able to easily store workouts into a weekly calendar at the b
 
  In the index.js file, at the top with the global variables, replace the value of configAPI with your API key string
  ```
- 'API-key-string'
+// global constants
+const configAPI = 'your-api-key-string'
  ```
 Start up your json server with
 ```
