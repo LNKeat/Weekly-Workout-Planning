@@ -10,13 +10,15 @@ The goal was to be able to easily store workouts into a weekly calendar at the b
 
  ## Features
  ### Select an exercise from API
- - user should be able to select a workout by scrolling through the list by workout names or typing in a workout name to narrow the list
- - user should be able to narrow the workout by body part or target muscles
-  - upon selecting one of these a new dropdown appears to select the specific body region or target muscle once one of those are selected the main dropdown only shows exercise names that target the selected region or muscle
+ - user can choose how to search for an exercise (exercise name, body part/region or target muscle)
+ - if searching by name:
+    -the dropdown list allows users to simply scroll the exercise in alphabetial order (>1,000 exercises) or they can start typing the name of an exercise to narrow the search to exercises that contain the text in the field
+ - if searching by body part or target muscle:
+    - upon selecting one of these a new dropdown appears to select the specific body region or target muscle once one of those are selected the main dropdown only shows exercise names that target the selected region or muscle
 ### Add the exercise to weekly calendar
  - user can add any exercise to as many week days as they would like
  - user can add custom goals to any exercise
-  -ie: distance to run, repeatitions or duration on an exercise, weight and other goals that may require very specific custom input
+    -ie: distance to run, repeatitions or duration on an exercise, weight and other goals that may require very specific custom input
  - once the user submits the form these exercise automatically populate into the weekly calendar and the today card (if exercise were added for that day)
  ### View daily details
  - user can view the details for any day of the week by clicking on the "view" button associated with a specific day to reveal a pop-up window with exercise details
@@ -56,11 +58,11 @@ Open the index.html file in your browser
 
 
 ## Contributing
-Fork it (https://github.com/LNKeat/Weekly-Workout-Planning)
-Create your feature branch (git checkout -b feature/fooBar)
-Commit your changes (git commit -am 'Add some fooBar')
-Push to the branch (git push origin feature/fooBar)
-Create a new Pull Request
+- Fork the repository: (https://github.com/LNKeat/Weekly-Workout-Planning)
+- Clone to your local environment
+- Add & Commit your changes
+- Push to the branch 
+- Create a new Pull Request
 
 ## License
 MIT License
