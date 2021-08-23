@@ -63,7 +63,7 @@ Open the index.html file in your browser
 - Clone to your local environment
 - Add & Commit your changes
 - Push to the branch *Don't forget to hide the API Key!
-    -How to: https://dev.to/ptprashanttripathi/how-to-hide-api-key-in-github-repo-2ik9
+    - How to: https://dev.to/ptprashanttripathi/how-to-hide-api-key-in-github-repo-2ik9
 - Create a new Pull Request
 
 ## License
