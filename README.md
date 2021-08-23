@@ -5,7 +5,7 @@ Flatiron school, phase 1 project:  a SPA designed to set and track workout goals
 This is an application created to practice some newly earned javascript skills (paired with VERY outdated and currently being updated HTML/CSS) to create an application to plan workouts one exercise at a time.  
 The goal was to be able to easily store workouts into a weekly calendar at the beginning of each week and be able to easily add & view exercises on a specific day using a simple single page application.  
 
- ## Tech/framework used
+ ## Language: 
  Vanilla Javascript
 
  ## Features
@@ -30,7 +30,7 @@ The goal was to be able to easily store workouts into a weekly calendar at the b
 
  ## Development Set up &  Database refresh
  Clone the repository into your local environment
- Request an API key: 
+ Request an API key in one of two ways: 
  1) Request a free API key directly from rapidapi.com by signing up or logging in to your own account:   https://rapidapi.com/justin-WFnsXH_t6/api/exercisedb/
  2) Contact Laura directly to borrow one that expires in 24 hours.  
  -LNKEAT@gmail.com
@@ -52,7 +52,7 @@ Open the index.html file in your browser
   ]
 }
 ```
-2. Referesh your browser and start adding exercises 
+2. Referesh browser and start adding exercises 
 
 
 ## Contributing
